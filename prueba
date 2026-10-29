@@ -1,0 +1,25 @@
+Fragmento de código
+graph TD
+    subgraph EDGE ["Nivel Edge (Parcelas)"]
+        ESP32["40 Nodos ESP32 + Kits"] -->|LoRaWAN| Gateway["Gateway LoRa Local"]
+    end
+
+    subgraph FOG ["Nivel Fog (On-Premise - Servidores HP UTC)"]
+        Gateway --> ChirpStack["ChirpStack / Broker MQTT"]
+        ChirpStack --> TimescaleDB[("TimescaleDB (Series de Tiempo)")]
+        TimescaleDB --> SyncDaemon["Daemon Sincronizador"]
+        TimescaleDB --> TinyML["Inferencia IA Local (XGBoost)"]
+    end
+
+    subgraph CLOUD ["Nivel Cloud (AWS)"]
+        SyncDaemon -.->|Retry + Circuit Breaker| APIGW["Amazon API Gateway"]
+        APIGW --> Cognito["Amazon Cognito (OAuth 2.1)"]
+        APIGW --> RDS[("Amazon RDS PostgreSQL")]
+        S3[("Amazon S3 (Datasets/Modelos)")] --> SageMaker["Entrenamiento IA"]
+    end
+
+    subgraph CLIENTS ["Consumidores"]
+        AppMobile["App Móvil Flutter (Offline-First)"] <--> APIGW
+        Dashboard["Panel Web Investigadores"] <--> APIGW
+        Aliados["APIs INIAP / GAD"] <--> APIGW
+    end
