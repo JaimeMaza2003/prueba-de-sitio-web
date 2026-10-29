@@ -24,3 +24,22 @@ graph TD
         Dashboard["Panel Web Investigadores"] <--> APIGW
         Aliados["APIs INIAP / GAD"] <--> APIGW
     end
+agrismart-latacunga-backend/
+├── .github/
+│   └── workflows/
+│       ├── ci-cd.yml                 # Pipeline SaaS (GitHub Actions)
+│       └── security-scan.yml         # Análisis estático SAST
+├── config/
+│   ├── openapi-spec.yaml             # Contrato de API Gateway
+│   └── mosquitto.conf                # Configuración Broker MQTT
+├── docker/
+│   ├── docker-compose.fog.yml        # Despliegue en Servidores HP (Fog)
+│   └── docker-compose.cloud.yml      # Despliegue en AWS EC2 (IaaS)
+├── src/
+│   ├── domain/                       # Lógica de Negocio (Hexagonal)
+│   ├── infrastructure/               # Adaptadores (PostgreSQL, MQTT, S3)
+│   └── sync/
+│       └── sync_daemon.py            # Sincronizador Fog-Cloud (Store-and-Forward)
+├── .env.example                      # Plantilla de variables de entorno (sin secretos)
+├── .gitignore                        # Exclusión estrita de claves y tokens
+└── README.md                         # Documentación principal
